@@ -1,0 +1,32 @@
+{
+    "mode": "All",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": "false"
+          }
+        ]
+      },
+      "then": {
+        "effect": "append",
+        "details": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "value": "[utcNow()]"
+          }
+        ]
+      }
+    },
+    "parameters": {
+        "tagName": {
+            "type": "String",
+            "defaultValue": "CreatedOn",
+            "metadata": {
+              "displayName": "Tag Name",
+              "description": "Created On Tag name. 'CreatedOn, Created-On'"
+            }
+          }
+    }
+  }
