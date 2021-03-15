@@ -1,0 +1,95 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "eastus2",
+            "metadata": {
+                "description": "Azure location for storing deployment metadata",
+                "name": "Deployment location"
+            }
+        },
+        "enforcePrivateMarkdownStorage": {
+            "type": "bool",
+            "defaultValue": false
+        }
+    },
+    "variables": {
+        "templateBaseUrl": "https://raw.githubusercontent.com/andrewmatveychuk/azure.policy/master/linked-templates/",
+
+        "linkedTemplates": {
+            // Policy definitions
+
+            // Naming Convention
+            "enforceNamingForResourcePolicy": "[concat(variables('templateBaseUrl'), 'policies/definitions/naming-convention/enforce-naming-for-resource/azuredeploy.json')]",
+            "enforceNamingForResourceGroupsPolicy": "[concat(variables('templateBaseUrl'), 'policies/definitions/naming-convention/enforce-naming-for-resourcegroups/azuredeploy.json')]",
+
+            // Initiative definitions
+
+            // Naming Convention
+            "namingConventionInitiative": "[concat(variables('templateBaseUrl'), 'initiatives/definitions/naming-convention/azuredeploy.json')]"
+        }
+    },
+    "resources": [
+        // Role Based Access Control Definitions
+
+        // Role Based Access Control Assignments
+
+        // Policy Definitions
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "enforceNamingForResourcePolicyDeployment",
+            "location": "[parameters('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linkedTemplates').enforceNamingForResourcePolicy]",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "enforceNamingForResourceGroupsPolicyDeployment",
+            "location": "[parameters('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linkedTemplates').enforceNamingForResourceGroupsPolicy]",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        } ,
+
+        // Initiative definitions
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "namingConventionInitiativeDeployment",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/enforceNamingForResourcePolicyDeployment",
+                "Microsoft.Resources/deployments/enforceNamingForResourceGroupsPolicyDeployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linkedTemplates').namingConventionInitiative]",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        }
+
+        // Remediations
+
+        // Policy Assignments
+
+        // Initiative Assignments
+
+        // Tags
+    ]
+  }
+  

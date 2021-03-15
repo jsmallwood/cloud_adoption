@@ -1,0 +1,1 @@
+New-AzTenantDeployment -Name 'NamingConvention' -Location 'eastus2' -

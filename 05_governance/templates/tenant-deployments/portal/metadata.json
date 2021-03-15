@@ -1,0 +1,10 @@
+{
+    "$schema": "https://aka.ms/azure-quickstart-templates-metadata-schema#",
+    "itemDisplayName": "Create a New Management Group",
+    "description": "This template is a tenant level template that will configure the enforcement of Markdown.",
+    "summary": "This template is a tenant level template that will configure the enforcement of Markdown.",
+    "type": "TenantDeployment",
+    "validationType": "Manual",
+    "githubUsername": "jsmallwood",
+    "dateUpdated": "2021-15-03"
+}

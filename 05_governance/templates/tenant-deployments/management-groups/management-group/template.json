@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "name": {
+        "type": "string"
+      },
+      "displayName": {
+        "type": "string"
+      }
+    },
+    "variables": {
+      "apiVersion": "2020-02-01"
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Management/managementGroups",
+        "apiVersion": "[variables('apiVersion')]",
+        "name": "[parameters('name')]",
+        "properties": {
+          "displayName": "[parameters('displayName')]"
+        }
+      }
+    ]
+  }
+  

@@ -7,7 +7,7 @@
         },
         "_artifactsLocation": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "https://raw.githubusercontent.com/jsmallwood/cloud_adoption/main/05_governance/templates/advisor/nested/",
             "metadata": {
                 "description": "this will be the location for artifacts"
             }
@@ -22,7 +22,7 @@
     },
     "variables": {
         "apiVersion-Deployments": "2020-10-01",
-        "template-suppression": "./nested/recommendation-suppression.json"
+        "template-suppression": "[concat(parameters('_artifactsLocation'), 'recommendation-suppression.json')]"
     },
     "resources": [
         {
@@ -37,7 +37,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "[variables('template-suppression')]"
+                    "uri": "[variables('template-suppression')]"
                 },
                 "parameters": {
                     "name": {
