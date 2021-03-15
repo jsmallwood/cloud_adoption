@@ -13,12 +13,34 @@
         "enforcePrivateMarkdownStorage": {
             "type": "bool",
             "defaultValue": false
+        },
+        "_artifactsLocation": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/jsmallwood/cloud_adoption/main/05_governance/",
+            "metadata": {
+                "description": "this will be the location for artifacts"
+            }
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "this will be the sas key to access artifacts"
+            }
         }
     },
     "variables": {
         "templateBaseUrl": "https://raw.githubusercontent.com/andrewmatveychuk/azure.policy/master/linked-templates/",
 
         "linkedTemplates": {
+            // Portal Configuration
+            "portalTemplate": "[concat(parameters('_artifactsLocation'), 'templates/tenant-deployments/portal/template.json')]",
+            "portalTemplateParameters": "[concat(parameters('_artifactsLocation'), 'templates/tenant-deployments/portal/template.parameters.json')]",
+
+            // Management Groups
+            "managementGroupTemplate": "[concat(parameters('_artifactsLocation'), 'templates/tenant-deployments/management-groups/management-group/template.json')]",
+            "childManagementGroupTemplate": "[concat(parameters('_artifactsLocation'), 'templates/tenant-deployments/management-groups/child-management-group/template.json')]",
+
             // Policy definitions
 
             // Naming Convention
@@ -34,14 +56,41 @@
     "resources": [
         // Portal Configuration
         {
-            "name": "default",
-            "type": "Microsoft.Portal/tenantConfigurations",
-            "apiVersion": "2020-09-01-preview",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "enforceNamingForResourcePolicyDeployment",
+            "location": "[parameters('location')]",
             "properties": {
-                "enforcePrivateMarkdownStorage": "[parameters('enforcePrivateMarkdownStorage')]"
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linkedTemplates').portalTemplate]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri": "[variables('linkedTemplates').portalTemplateParameters]",
+                    "contentVersion": "1.0.0.0"
+                }
             }
         },
 
+        // Management Group Deployments
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "org-root",
+            "location": "[parameters('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('linkedTemplates').portalTemplate]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri": "[variables('linkedTemplates').portalTemplateParameters]",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        },
         // Policy Definitions
         {
             "type": "Microsoft.Resources/deployments",
