@@ -1,9 +1,9 @@
-[string] $subscriptionId = "9333ff49-e576-423a-982f-545d2eb5ed65"
+[string] $subscriptionId = ""
 
 [int] $keyExpirationInMonths = ""
 [int] $keyExpirationInYears = ""
 
-[string] $storageAccountName = "azsk20210107203508"
+[string] $storageAccountName = ""
 [string] $storageAccountResourceGroupName = "AzSKRG"
 
 [string] $keyVaultName = "kv-az-eastus2"
