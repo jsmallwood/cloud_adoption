@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+          "name": "string",
+          "type": "Microsoft.Advisor/configurations",
+          "apiVersion": "2020-01-01",
+          "properties": {
+            "exclude": "boolean",
+            "lowCpuThreshold": "string",
+            "digests": [
+              {
+                "name": "string",
+                "actionGroupResourceId": "string",
+                "frequency": "integer",
+                "categories": [
+                  "string"
+                ],
+                "language": "string",
+                "state": "string"
+              }
+            ]
+          }
+        }
+    ],
+    "outputs": {
+    }
+  }

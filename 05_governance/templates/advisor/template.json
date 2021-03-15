@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "disabled-recommendation-ids": {
+            "type": "array"
+        },
+        "_artifactsLocation": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "this will be the location for artifacts"
+            }
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "this will be the sas key to access artifacts"
+            }
+        }
+    },
+    "variables": {
+        "apiVersion-Deployments": "2020-10-01",
+        "template-suppression": "./nested/recommendation-suppression.json"
+    },
+    "resources": [
+        {
+            "name": "[parameters('disabled-recommendation-ids')[copyIndex()].name]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion-Deployments')]",
+            "copy": {
+                "name": "suppresion-loop",
+                "count": "[length(parameters('disabled-recommendation-ids'))]",
+                "mode": "serial"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "[variables('template-suppression')]"
+                },
+                "parameters": {
+                    "name": {
+                        "value": "[parameters('disabled-recommendation-ids')[copyIndex()].name]"
+                    },
+                    "id": {
+                        "value": "[parameters('disabled-recommendation-ids')[copyIndex()].id]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+    }
+  }

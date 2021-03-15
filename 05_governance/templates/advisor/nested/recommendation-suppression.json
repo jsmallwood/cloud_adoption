@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "apiVersion": "2020-01-01"
+    },
+    "resources": [
+        {
+            "name": "[parameters('name')]",
+            "type": "Microsoft.Advisor/recommendations/suppressions",
+            "apiVersion": "[variables('apiVersion')]",
+            "properties": {
+                "suppressionId": "[parameters('id')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+  }

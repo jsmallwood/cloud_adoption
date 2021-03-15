@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "disabled-recommendation-ids":{
+            "value": [
+                {
+                    "name": "Enable Soft Delete to protect you blob data",
+                    "id": "42dbf883-9e4b-4f84-9da4-232b87c4b5e9",
+                    "category": "Reliability"
+                }
+            ]
+        }
+    }
+  }

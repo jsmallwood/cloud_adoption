@@ -1,0 +1,3 @@
+resources  
+| where tags.Application !=''  
+| distinct tostring(tags.Application)
